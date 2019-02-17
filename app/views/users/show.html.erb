@@ -1,0 +1,91 @@
+<body>
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+  <%= link_to "<p class='navbar-brand col-sm-3 col-md-2 mr-0'>Accueil</p>".html_safe, posts_path %>
+
+</nav>
+<br><br>
+<br>
+
+
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              Infos
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">
+              <b> <%= @user.first_name %></b>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <b> <%= @user.last_name %></b>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <%= @user.email%>
+            </a>
+          </li>
+<hr>
+          <% if current_user == User.find(params[:id]) %>
+            <%= link_to edit_user_path(current_user) do %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              Editer profil
+            <% end %>
+          <% end %>
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Posts</h1>
+      </div>
+
+      <% @posts.each do |post| %>
+    <div class="col-md-6">
+        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col p-4 d-flex flex-column position-static">
+            <h3 class="mb-0"><%= link_to post_path(post) do  %> <%= post.title %> <% end %></h3>
+            <p class="mb-auto"><%= post.lead %></p>
+            <hr>
+            <div class="mb-1 text-muted"><%= post.created_at.strftime("%B %d, %Y %H:%M")%></div>
+            <div class="mb-1 text-muted">
+              <%= link_to user_path(User.find(post.user_id)) do  %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <%= User.find(post.user_id).first_name %>
+                <%= User.find(post.user_id).last_name %>
+              <% end %>
+            </div>
+            <% if current_user == User.find(params[:id]) %>
+              <div class="card-action center-align">
+
+                <%= link_to edit_post_path(post) do %>
+                  <button class="btn btn-info">Editer</button>
+                <% end %>
+
+                <%= link_to post_path(post), method: :delete, data: { confirm: 'Etes-vous sûr de vouloir supprimer ce post ?' } do %>
+                  <button class="btn btn-danger">Supprimer</button>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+          <div class="col-auto d-none d-lg-block">
+            <%= image_tag(post.image.small.url, :alt => post.title ) %>
+          </div>
+        </div>
+      </div>
+        <% end %>
+    </main>
+  </div>
+</div>
+</body>
+
+

@@ -1,0 +1,5 @@
+<%= form_for(@post) do |f| %>
+<%= render partial: 'inner_form', locals: {f: f} %>
+<br>
+<%= f.submit %>
+<% end %>

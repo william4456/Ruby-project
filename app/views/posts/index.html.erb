@@ -1,0 +1,45 @@
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+  <h5 class="my-0 mr-md-auto font-weight-normal">Posts récents</h5>
+  <nav class="my-2 my-md-0 mr-md-3">
+    <% if user_signed_in? %>
+      <%= link_to "<p class='btn text-dark'>Créer un post</p>".html_safe, new_post_path %>
+      <%= link_to "<p class='btn btn-outline-primary'>logout</p>".html_safe, destroy_user_session_path, method: :delete %>
+
+  <% else %>
+      <%= link_to "<p class='btn btn-outline-primary'>login</p>".html_safe, new_user_session_path %>
+    <% end %>
+  </nav>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="card-deck mb-3 text-center">
+      <% @posts.each do |post| %>
+
+    <div class="card mb-4 shadow-sm">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">
+              <%= link_to post_path(post) do  %>
+                <%= post.title %>
+              <% end %>
+            </h4>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title pricing-card-title font-italic"> <%= post.lead %></h4>
+            <%= image_tag(post.image.small.url, :alt => post.title ) %>
+            <hr>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li><%= post.created_at.strftime("%B %d, %Y %H:%M")%></li>
+              <li><%= link_to user_path(User.find(post.user_id)) do  %>
+                <%= User.find(post.user_id).first_name %>
+                <%= User.find(post.user_id).last_name %>
+              <% end %>
+              </li>
+            </ul>
+          </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
